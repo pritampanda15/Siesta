@@ -8,13 +8,13 @@ c. denchar.fdf ----> For denchar calculations 3D/2D.
 
 Before changing the parameters mentioned in the input files (marked as XXXXX), do convergence test especially for meshcutoff, kpoints, SCF.DM.Tolerance, Electronic Temperature.
 
-Recommended Criteria's for fully relativistic calculations during SCF cycles
+Recommended Criteria's for fully relativistic calculations during SCF cycles:
 1. High number of kpoints
 2. Low electronic temperature
 3. Extremely small DM. Tolerance
 4. High MeshCutoff
 
-Recommended tutorials
+Recommended tutorials:
 https://personales.unican.es/junqueraj/JavierJunquera_files/Metodos/Theory-session.html
 https://personales.unican.es/junqueraj/JavierJunquera_files/Metodos/Hands-on-session.html
 https://departments.icmab.es/leem/siesta/Documentation/Tutorials/index.html
@@ -22,7 +22,7 @@ https://departments.icmab.es/leem/siesta/Documentation/Tutorials/Barcelona-2007/
 https://departments.icmab.es/leem/siesta/Documentation/Tutorials/www.niees.ac.uk/events/siesta/siesta_files/Intro-1.pdf
 http://www.training.prace-ri.eu/uploads/tx_pracetmo/Tutorial_-_The_Siesta_Code.pdf
 
-Access to psuedopotentials
+Access to psuedopotentials:
 http://nninc.cnf.cornell.edu/ (PSF format)
 https://departments.icmab.es/leem/siesta/Databases/Pseudopotentials/periodictable-intro.html (PSF format)
 http://www.pseudo-dojo.org/ (PSML format)
