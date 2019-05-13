@@ -28,10 +28,12 @@ https://departments.icmab.es/leem/siesta/Databases/Pseudopotentials/periodictabl
 http://www.pseudo-dojo.org/ (PSML format)
 
 Citations
-Phys. Rev. B 53, 10441, (1996)
-Int. J. Quantum Chem., 65, 453 (1997)
-J. Phys.: Condens. Matt. 14, 2745-2779 (2002)
-J. Phys.: Condens. Matter 20, 064208 (2008)
+1. Phys. Rev. B 53, 10441, (1996)
+2. Int. J. Quantum Chem., 65, 453 (1997)
+3. J. Phys.: Condens. Matt. 14, 2745-2779 (2002)
+4. J. Phys.: Condens. Matter 20, 064208 (2008)
+5. Computer Physics Communications 226, 39-54 (2018), 10.1016/j.cpc.2018.01.012 arxiv preprint
+6. Computer Physics Communications 227, 51-71 (2018), 10.1016/j.cpc.2018.02.011
 
 Cheers!!!
 Happy DFTing.
