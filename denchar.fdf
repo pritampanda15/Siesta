@@ -1,0 +1,184 @@
+#======================================================#
+# Script:Denchar calculations for XXX molecule     #
+# By Pritam Kumar Panda
+# Dept. Of Physics and Astronomy
+# Materials Theory Group
+# Uppsala University 
+# Email:pritampkp15@gmail.com   
+#------------------------------------------------------#	
+
+	# -- NAME & LABEL --
+
+SystemName XX Denchar calculations
+SystemLabel bulk
+
+	# -- MATERIAL --
+
+NumberOfSpecies XX
+NumberOfAtoms XX
+
+%block Chemical_Species_label
+1 XX XX
+2 XX XX
+%endblock Chemical_Species_label
+
+	# -- CELL-ATOMIC-POSITION --
+
+LatticeConstant 1.0 		Ang
+
+%block LatticeVectors
+ XXXX         XXXX         XXXXX
+XXXX         XXXX         XXXXX
+ XXXX         XXXX         XXXXX
+%endblock LatticeVectors
+
+AtomicCoordinatesFormat      	Ang
+%block  AtomicCoordinatesAndAtomicSpecies
+XXX XXXX XXX   1
+XXX XXXX XXX   1
+XXX XXXX XXX   2
+XXX XXXX XXX   2
+%endblock  AtomicCoordinatesAndAtomicSpecies
+
+	# -- MONKHORST-PACK --
+
+%block kgrid_Monkhorst_Pack
+XX   0   0   0.0
+0   XX   0   0.0
+0   0   XX   0.0
+%endblock kgrid_Monkhorst_Pack
+
+
+	# -- SELF-CONSISTENT FIELD --
+
+MeshCutoff		XX Ry
+PAO.BasisType		split
+PAO.BasisSize 		DZP
+PAO.EnergyShift 	0.03 eV
+XC.functional        	GGA
+XC.authors              PBE
+MaxSCFIterations     	XXX
+SolutionMethod         	diagon
+
+	# -- SELF-CONSISTENT FIELD-MIXING --
+
+DM.MixingWeight        	0.02
+DM.NumberPulay      	3
+DM.Tolerance 		1.d-5
+
+	
+	# -- MOLECULAR DYNAMICS-CONJUGATE-GRADIENT-METHOD --
+
+MD.TypeOfRun          	CG  
+MD.NumCGsteps     	XXX
+MD. MaxForceTol 	0.04 eV/Ang
+MD.VariableCell      	T
+MD.ConstantVolume  	F
+MD.UseSaveXV        	T
+MD.UseSaveCG    	T
+WriteMDHistory      	T 
+WriteMDXMol  		T
+
+	# -- SPIN FIELD --
+
+SpinPolarized      	F       #for scalar relativistic use F;for fully relativistic use T
+FixSpin             	F	#for scalar relativistic use F;for fully relativistic use F
+NonCollinearSpin        F	#for scalar relativistic use F;for fully relativistic use T
+DM.InitSpinAF           F	#for scalar relativistic use F;for fully relativistic use T
+
+
+	# -- SAVING DENSITY-MATRIX & FOR POST RUN --
+
+ON.UseSaveLWF	    	T
+DM.UseSaveDM          	T 
+UseSaveData           	T
+LongOutput           	T
+
+
+	# -- SAVING WAVE/BAND/EIGEN/KPOINTS/ANIMATION INFORMATION --
+
+WriteKbands            	T
+WriteBands           	T
+WriteCoorXmol 		T
+WriteCoorStep       	T
+WriteKpoints        	T
+WriteCoorCerius		T
+WriteHS             	T
+WriteForces           	T
+WriteMullikenPop	1
+SaveHS			T
+XML.Write              	T
+
+	# -- BAND-STRUCTURE-ANALYSIS --
+
+BandLinesScale		pi/a
+
+%block BandLines
+1	0.0000	0.0000	0.5000	A
+20	0.5000	0.0000	0.5000	L
+25	0.5000	0.0000	0.0000	M
+30	0.0000	0.0000	0.0000	\Gamma
+35	0.0000	0.0000	0.5000	A
+40	0.6666	0.3333	0.5000	H
+45	0.6666	0.3333	0.0000	K
+50	0.0000	0.0000	0.0000	\Gamma
+%endblock BandLines
+
+
+	# -- WAVEFUNCTIONS-OF-BANDS --
+
+WFS.Write.For.Bands   	T
+COOP.Write           	T
+WriteWaveFunctions    	T
+
+%block WaveFuncKPoints
+0.0000	0.0000	0.5000 	from 1 to 5
+0.5000	0.0000	0.5000	from 1 to 5
+0.5000	0.0000	0.0000	from 1 to 5
+0.0000	0.0000	0.0000	from 1 to 5
+0.0000	0.0000	0.5000	from 1 to 5
+0.6666	0.3333	0.5000	from 1 to 5
+0.6666	0.3333	0.0000	from 1 to 5
+0.0000	0.0000	0.0000	from 1 to 5
+%endblock WaveFuncKPoints
+
+	# -- CHARGE-DENSITIES AND POTENTIALS FOR MACROWAVE --
+
+SaveRho       		T
+SaveDeltaRho  		T
+SaveTotalPotential   	T
+SaveIonicCharge		T
+SaveElectrostaticPotential T
+SaveTotalCharge		T
+SaveRhoXC		T
+
+	# -- PSUEDOPOTENTIALS-EXTRAINFO --
+
+WriteIonPlotFiles          F
+WriteHirshfeldPop          F
+Atom.Debug.KB.Generation   F
+
+	# -- DENCHAR —-
+
+WriteDenchar        	T	 
+Denchar.TypeOfRun  	3D   # use 2D if you want 2D
+Denchar.PlotCharge   	T
+Denchar.CoorUnits     	Ang
+Denchar.DensityUnits  	Ele/Ang**3
+Denchar.MinX        	-5.0  bohr      
+Denchar.MaxX       	5.0  bohr      
+Denchar.MinY       	-5.0  bohr      
+Denchar.MaxY        	5.0  bohr      
+Denchar.NumberPointsX 	40            
+Denchar.NumberPointsY	40            
+Denchar.PlaneGeneration ThreeAtomicIndices
+Denchar.PlotWaveFunctions  T
+
+%block Denchar.Indices3Atoms                
+   1  2  3
+%endblock Denchar.Indices3Atoms
+
+
+
+
+
