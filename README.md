@@ -2,9 +2,12 @@
 SIESTA is a density-functional code able to perform efficient electronic structure calculations and ab initio molecular dynamics  simulations of molecules and solids.
 
 FDF (Input) files for relaxation, PDOS and Denchar calculations in SIESTA 4.0.2 version as well as 4.1-b4 and PSML supported version (https://launchpad.net/siesta/psml-support) are as follows:
-a. relax.fdf ------> For relaxation;
-b. dos.fdf --------> For PDOS calculation;
-c. denchar.fdf ----> For denchar calculations 3D/2D.
+a. complete_fdf ----> A complete fdf file for various strategical electronic structure calculations
+b. relax.fdf ------> For relaxation;
+c. dos.fdf --------> For PDOS calculation;
+d. denchar.fdf ----> For denchar calculations 3D/2D.
+
+An additional fdf input file with all the tags for different strategies are provided in complete_fdf file. Calculations like bandstructure, phonons, fermi surface, LDA+U tags have been defined. 
 
 Before changing the parameters mentioned in the input files (marked as XXXXX), do convergence test especially for meshcutoff, kpoints, SCF.DM.Tolerance, Electronic Temperature.
 
