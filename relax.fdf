@@ -65,7 +65,9 @@ SolutionMethod         	diagon
 DM.MixingWeight        	0.02
 DM.NumberPulay      	3
 DM.Tolerance 		1.d-5
-
+DM.Require.Energy.Convergence   T
+DM.Energy.Tolerance     1.e-5 eV
+SCF.MixAfterConvergence F
 	
 	# -- MOLECULAR DYNAMICS-CONJUGATE-GRADIENT-METHOD --
 
@@ -76,15 +78,17 @@ MD.VariableCell      	T
 MD.ConstantVolume  	F
 MD.UseSaveXV        	T
 MD.UseSaveCG    	T
+MD.MaxStressTol         0.0010 eV/Ang**
 WriteMDHistory      	T 
 WriteMDXMol  		T
+MD.MaxCGDispl           0.02 Bohr
 
 	# -- SPIN FIELD --
 
-SpinPolarized      	F       #for scalar relativistic use F;for fully relativistic use T
-FixSpin             	F	#for scalar relativistic use F;for fully relativistic use F
-NonCollinearSpin        F	#for scalar relativistic use F;for fully relativistic use T
-DM.InitSpinAF           F 	#for scalar relativistic use F;for fully relativistic use T
+SpinPolarized      	F       #If spin polarized the use T
+FixSpin             	F	#for magnetic systems
+NonCollinearSpin        F	#for magnetic systems
+DM.InitSpinAF           F 	#for magnetic systems
 
 	# -- SAVING DENSITY-MATRIX & FOR POST RUN --
 
@@ -129,7 +133,8 @@ BandLinesScale		pi/a
 WFS.Write.For.Bands   	T
 COOP.Write           	T
 WriteWaveFunctions    	T
-
+	
+	# -- WAVEFUNCTIONKPOINTS (OPTIONAL) --
 %block WaveFuncKPoints
 0.0000	0.0000	0.5000 	from 1 to 5
 0.5000	0.0000	0.5000	from 1 to 5
@@ -156,7 +161,12 @@ WriteIonPlotFiles          F
 WriteHirshfeldPop          F
 Atom.Debug.KB.Generation   F
 
+	# -- GEOMETRY CONSTRAINTS --
 
+%block GeometryConstraints          # Constraints impossed on
+   position   X   X                 #   the atomic positions
+   stress     X   X   X             #   the shear stresses
+%endblock GeometryConstraints
 
 
 
