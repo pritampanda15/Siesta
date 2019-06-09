@@ -110,7 +110,7 @@ WriteForces           	T
 WriteMullikenPop	1
 SaveHS			T
 XML.Write              	T
-
+SaveBaderCharge         T
 	# -- BAND-STRUCTURE-ANALYSIS --
 
 BandLinesScale		pi/a
