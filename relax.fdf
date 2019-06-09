@@ -100,7 +100,7 @@ LongOutput           	T
 
 	# -- SAVING WAVE/BAND/EIGEN/KPOINTS/ANIMATION INFORMATION --
 
-WriteKbands            	T
+WriteKbands            	F
 WriteBands           	T
 WriteCoorXmol 		T
 WriteCoorStep       	T
