@@ -99,7 +99,7 @@ LongOutput           	T
 
 	# -- SAVING WAVE/BAND/EIGEN/KPOINTS/ANIMATION INFORMATION --
 
-WriteKbands            	T
+WriteKbands            	F
 WriteBands           	T
 WriteCoorXmol 		T
 WriteCoorStep       	T
@@ -111,6 +111,7 @@ WriteMullikenPop	1
 SaveHS			T
 XML.Write              	T
 SaveBaderCharge         T
+WriteSiestaDim          T
 	# -- BAND-STRUCTURE-ANALYSIS --
 
 BandLinesScale		pi/a
