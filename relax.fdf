@@ -126,35 +126,7 @@ BandLinesScale		pi/a
 45	0.6666	0.3333	0.0000	K
 50	0.0000	0.0000	0.0000	\Gamma
 %endblock BandLines
-
-
-	# -- WAVEFUNCTIONS-OF-BANDS --
-
-WFS.Write.For.Bands   	T
-COOP.Write           	T
-WriteWaveFunctions    	T
 	
-	# -- WAVEFUNCTIONKPOINTS (OPTIONAL) --
-%block WaveFuncKPoints
-0.0000	0.0000	0.5000 	from 1 to 5
-0.5000	0.0000	0.5000	from 1 to 5
-0.5000	0.0000	0.0000	from 1 to 5
-0.0000	0.0000	0.0000	from 1 to 5
-0.0000	0.0000	0.5000	from 1 to 5
-0.6666	0.3333	0.5000	from 1 to 5
-0.6666	0.3333	0.0000	from 1 to 5
-0.0000	0.0000	0.0000	from 1 to 5
-%endblock WaveFuncKPoints
-
-	# -- CHARGE-DENSITIES AND POTENTIALS FOR MACROWAVE --
-
-SaveRho       		T
-SaveDeltaRho  		T
-SaveTotalPotential   	T
-SaveIonicCharge		T
-SaveElectrostaticPotential T
-SaveTotalCharge		T
-
 	# -- PSUEDOPOTENTIALS-EXTRAINFO --
 
 WriteIonPlotFiles          F
@@ -167,6 +139,8 @@ Atom.Debug.KB.Generation   F
    position   X   X                 #   the atomic positions
    stress     X   X   X             #   the shear stresses
 %endblock GeometryConstraints
+
+
 
 
 
