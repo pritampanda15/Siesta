@@ -9,6 +9,10 @@ d. denchar.fdf ----> For denchar calculations 3D/2D.
 
 An additional fdf input file with all the tags for different strategies are provided in complete_fdf file. Calculations like bandstructure, phonons, fermi surface, LDA+U tags have been defined. 
 
+Check out my youtube tutorial videos:
+https://www.youtube.com/watch?v=eofuNrCtUQU&t=43s
+https://www.youtube.com/watch?v=B3HUvSkG55o&t=26s
+
 Before changing the parameters mentioned in the input files (marked as XXXXX), do convergence test especially for meshcutoff, kpoints, SCF.DM.Tolerance, Electronic Temperature.
 
 Recommended Criteria's for fully relativistic calculations during SCF cycles:
