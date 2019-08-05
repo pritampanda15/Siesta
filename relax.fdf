@@ -73,12 +73,12 @@ SCF.MixAfterConvergence F
 
 MD.TypeOfRun          	CG  
 MD.NumCGsteps     	XXX
-MD.MaxForceTol 	        0.04 eV/Ang
+MD.MaxForceTol 	        0.04 
 MD.VariableCell      	T
 MD.ConstantVolume  	F
 MD.UseSaveXV        	T
 MD.UseSaveCG    	T
-MD.MaxStressTol         0.0010 eV/Ang
+MD.MaxStressTol         0.0010 
 WriteMDHistory      	T 
 WriteMDXMol  		T
 MD.MaxCGDispl           0.02 Bohr
