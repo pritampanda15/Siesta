@@ -1,3 +1,11 @@
+#======================================================#
+# Script:mesh-cutoff optimization for ZnO molecule     #
+# By Pritam Kumar Panda
+# Dept. Of Physics and Astronomy
+# Materials Theory Group
+# Uppsala University  
+#======================================================#
+
 #!/bin/bash
 #SBATCH --time=24:00:00
 #SBATCH  -N 1
