@@ -6,7 +6,7 @@
 # Dept. Of Physics and Astronomy
 # Materials Theory Group
 # Uppsala University 
-#    
+#Reference: Dr. Mohan L Verma, http://drmlv.in/video-tutorial/video-tutorial.html    
 #------------------------------------------------------#
 # The for represets the mesh-cutoff  from 50 to 500    #  
 # run this script using cammand                        #
