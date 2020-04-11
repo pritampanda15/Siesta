@@ -1,0 +1,100 @@
+SystemName       electrode
+SystemLabel      electrode
+NumberOfAtoms    24 
+NumberOfSpecies  2
+
+%block ChemicalSpeciesLabel
+ 1   74    W
+ 2   6     C
+%endblock ChemicalSpeciesLabel
+
+LatticeConstant 1.0 Ang
+
+%block LatticeVectors
+    11.3715600967999997    0.0000000000000000    0.0000000000000000
+     0.0000000000000000   24.0000000000000000    0.0000000000000000
+     0.0000000000000000    0.0000000000000000    4.9240303040000004
+%endblock LatticeVectors
+
+
+%block kgrid_Monkhorst_Pack
+ 10  0   0    0.0
+ 0   1   0    0.0
+ 0   0   100  0.0
+%endblock kgrid_Monkhorst_Pack
+
+AtomicCoordinatesFormat Ang
+AtomCoorFormatOut       Ang 
+
+%block AtomicCoordinatesAndAtomicSpecies
+       1.42144501       8.61676788       4.10335827    1   74 
+       0.00000000       8.61676788       1.64134335    1   74 
+       1.42144501      11.38323212       4.10335827    1   74 
+       0.00000000      11.38323212       1.64134335    1   74 
+       4.26433504       8.61676788       4.10335827    1   74 
+       2.84289002       8.61676788       1.64134335    1   74 
+       4.26433504      11.38323212       4.10335827    1   74 
+       2.84289002      11.38323212       1.64134335    1   74 
+       7.10722506       8.61676788       4.10335827    1   74 
+       5.68578005       8.61676788       1.64134335    1   74 
+       7.10722506      11.38323212       4.10335827    1   74 
+       5.68578005      11.38323212       1.64134335    1   74 
+       9.95011508       8.61676788       4.10335827    1   74 
+       8.52867007       8.61676788       1.64134335    1   74 
+       9.95011508      11.38323212       4.10335827    1   74 
+       8.52867007      11.38323212       1.64134335    1   74 
+        1.42144489      10.00000000       0.82067168   2     6 
+        0.00000000      10.00000000       3.28268671   2     6 
+        4.26433492      10.00000000       0.82067168   2     6 
+        2.84289002      10.00000000       3.28268671   2     6 
+        7.10722494      10.00000000       0.82067168   2     6 
+        5.68578005      10.00000000       3.28268671   2     6 
+        9.95011497      10.00000000       0.82067168   2     6 
+        8.52867007      10.00000000       3.28268671   2     6 
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+#======= General variables ======
+PAO.BasisSize     DZP
+PAO.SplitTailNorm true
+PAO.SplitNormH          0.30
+
+MeshCutoff            300.0 Ry
+XC.functional         GGA 
+XC.authors            PBE
+ElectronicTemperature    25 meV
+UseSaveData           .true.
+PAO.EnergyShift       0.15 eV
+UserBasis          .True.
+
+#============== MD variables =======
+MD.TypeOfRun          CG
+MD.NumCGsteps         0
+MD.MaxForceTol        0.01 eV/Ang
+MD.MaxStressTol       0.05 GPa
+MD.UseSaveXV          .true.
+MD.FinalTimeStep      1
+
+#=================================
+#======== SCF variables ==========
+MaxSCFIterations      250
+DM.MixingWeight       0.08
+DM.NumberPulay        3
+DM.UseSaveDM          .true.
+DM.Tolerance           1.d-4
+
+#======== Write ============
+
+SolutionMethod        diagon
+ParallelOverK         .true.
+
+WriteMullikenPop                1
+WriteBands                      .false.
+SaveRho                         .false.
+SaveDeltaRho                    .false.
+SaveHS                          .false.
+SaveElectrostaticPotential      F
+SaveTotalPotential              no
+WriteCoorXmol                   .true.
+WriteMDXmol                     .true.
+WriteMDhistory                  .false.
+WriteEigenvalues                yes
