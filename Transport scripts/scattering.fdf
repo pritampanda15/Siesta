@@ -20,12 +20,6 @@ LatticeConstant 1.0 Ang
 %endblock LatticeVectors
 
 
-%block kgrid_Monkhorst_Pack
- 10    0   0   0.0
- 0     1   0   0.0
- 0     0   1   0.0
-%endblock kgrid_Monkhorst_Pack
-
 AtomicCoordinatesFormat Ang
 AtomCoorFormatOut       Ang 
 #%block GeometryConstraints
