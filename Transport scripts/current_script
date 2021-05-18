@@ -16,7 +16,7 @@ for i in $VOLTS
 do
 
 cp -r cont $i
-
+rm -rf bi_scat.TBT.nc
 cd $i
 #cp ../1.5/*.DM .
 #cp ../1.5/*.TSHS .
@@ -26,6 +26,7 @@ cp ../*.ion .
 cp ../*.TSHS .
 cp ../*.TSDE .
 cp ../*.DM .
+rm -rf bi_scat.TBT.nc
 #cp ../BNA_POSITIONS.fdf .
 cat > POSCAR.fdf  <<EOF
 
@@ -526,4 +527,5 @@ mkdir cont
 rm -rf bi_scat.TBT.nc
 
 cp   ./$i/* cont  # copy these files for continuation of the next bias step.
+rm -rf bi_scat.TBT.nc
 done
