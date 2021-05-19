@@ -16,18 +16,14 @@ for i in $VOLTS
 do
 
 cp -r cont $i
-rm -rf bi_scat.TBT.nc
 cd $i
-#cp ../1.5/*.DM .
-#cp ../1.5/*.TSHS .
-#cp ../1.5/*.TSDE .
+
 
 cp ../*.ion .
 cp ../*.TSHS .
 cp ../*.TSDE .
 cp ../*.DM .
-rm -rf bi_scat.TBT.nc
-#cp ../BNA_POSITIONS.fdf .
+
 cat > POSCAR.fdf  <<EOF
 
 SolutionMethod        Transiesta
@@ -524,8 +520,10 @@ cat TBT.out | grep "Left -> Right" | awk '{print $9    $11     $12}' >> ../IV.da
 cd ..
 rm -rf cont
 mkdir cont
-rm -rf bi_scat.TBT.nc
 
-cp   ./$i/* cont  # copy these files for continuation of the next bias step.
-rm -rf bi_scat.TBT.nc
+
+rsync -aP --exclude=bi_scat.TBT.nc ./$i/bi_scat.TSDE ./$i/bi_scat.TSHS ./$i/bi_scat.DM cont  # copy these files for continuation of the next bias step.
+
+done
+
 done
