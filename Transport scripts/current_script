@@ -526,4 +526,3 @@ rsync -aP --exclude=bi_scat.TBT.nc ./$i/bi_scat.TSDE ./$i/bi_scat.TSHS ./$i/bi_s
 
 done
 
-done
