@@ -1,0 +1,125 @@
+
+SystemName  elec
+SystemLabel elec
+
+==================================================
+==================================================
+# SPECIES AND BASIS
+
+# Number of species 
+NumberOfSpecies 1
+
+%block ChemicalSpeciesLabel
+  1   6    C
+%endblock ChemicalSpeciesLabel
+
+PAO.BasisSize    SZP
+PAO.EnergyShift  0.05 Ry
+
+==================================================
+==================================================
+
+
+LatticeConstant             1.00 Ang
+
+%block LatticeVectors
+    27.438380      0.000000      0.000000
+     0.000000     13.725869      0.000000
+     0.000000      0.000000      4.830319
+%endblock LatticeVectors
+# K-points
+
+ %block kgrid_Monkhorst_Pack 
+ 1   0   0   0.0
+ 0   3   0   0.0
+ 0   0   60  0.0
+ %endblock kgrid_Monkhorst_Pack
+ 
+# Atomic coordinates
+NumberOfAtoms 22
+
+AtomicCoordinatesFormat Ang
+%block AtomicCoordinatesAndAtomicSpecies
+13.654350	1.940930	0.710430		1
+13.654350	4.401930	0.710430		1
+13.654350	6.862930	0.710430		1
+13.654350	9.323940	0.710430		1
+13.654350	11.784940	0.710430		1
+13.654350	0.710430	1.420860		1
+13.654350	3.171430	1.420860		1
+13.654350	5.632430	1.420860		1
+13.654350	8.093440	1.420860		1
+13.654350	10.554440	1.420860		1
+13.654350	13.015440	1.420860		1
+13.654350	0.710430	2.841720		1
+13.654350	3.171430	2.841720		1
+13.654350	5.632430	2.841720		1
+13.654350	8.093440	2.841720		1
+13.654350	10.554440	2.841720		1
+13.654350	13.015440	2.841720		1
+13.654350	1.940930	3.552150		1
+13.654350	4.401930	3.552150		1
+13.654350	6.862930	3.552150		1
+13.654350	9.323940	3.552150		1
+13.654350	11.784940	3.552150		1
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+
+==================================================
+==================================================
+# General variables
+
+ElectronicTemperature  100 K 
+MeshCutoff           300. Ry
+xc.functional         GGA           # Exchange-correlation functional
+xc.authors            PBE
+SpinPolarized .false.
+SolutionMethod Diagon
+
+==================================================
+==================================================
+# SCF variables
+
+DM.MixSCF1   T
+MaxSCFIterations      300           # Maximum number of SCF iter
+DM.MixingWeight       0.03          # New DM amount for next SCF cycle
+DM.Tolerance          1.d-4         # Tolerance in maximum difference
+DM.UseSaveDM          true          # to use continuation files
+DM.NumberPulay         5
+Diag.DivideAndConquer  no
+Diag.ParallelOverK    yes
+
+==================================================
+==================================================
+# MD variables
+
+MD.FinalTimeStep 1
+MD.TypeOfRun CG
+MD.NumCGsteps     000
+MD.UseSaveXV      .true.
+
+BandLinesScale ReciprocalLatticeVectors
+%block BandLines
+1 0 0 0
+50 0 0 0.5
+%endblock Bandlines
+
+==================================================
+==================================================
+# Output variables
+
+WriteMullikenPop                1
+WriteBands                      .true.
+SaveRho                         .true.
+SaveDeltaRho                    .true.
+SaveHS                          .false.
+SaveElectrostaticPotential      True 
+SaveTotalPotential              no
+WriteCoorXmol                   .true.
+WriteMDXmol                     .true.
+WriteMDhistory                  .false.
+WriteEigenvalues                yes
+
+==================================================
+==================================================
+
