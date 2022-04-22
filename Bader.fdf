@@ -1,0 +1,106 @@
+SystemName POSCAR
+SystemLabel POSCAR
+
+NumberOfAtoms 4
+NumberOfSpecies 2
+
+%block Chemical_Species_label
+1 7 N
+2 1 H
+%endblock Chemical_Species_label
+
+LatticeConstant 1.0 Ang
+%block LatticeVectors
+ 8.6511600000 0.0000000000 0.0000000000
+ 0.0000000000 20.0000000000 0.0000000000
+ 0.0000000000 0.0000000000 32.6256000000
+%endblock LatticeVectors
+
+
+AtomicCoordinatesFormat Ang
+%block  AtomicCoordinatesAndAtomicSpecies
+5.3348 9.9927 16.1698 1
+5.7751 10.1494 17.0728 2
+5.5404 9.0301 15.9147 2
+5.8325 10.5777 15.5036 2
+%endblock  AtomicCoordinatesAndAtomicSpecies
+
+SolutionMethod        diagon
+PAO.BasisSize    DZP
+PAO.EnergyShift  0.005 Ry
+XC.functional   GGA
+XC.authors      PBE
+# K-points
+
+%block kgrid_Monkhorst_Pack
+ 9    0    0    0.0
+ 0    9    0    0.0
+ 0    0    9    0.0
+%endblock kgrid_Monkhorst_Pack
+# SCF variables
+
+DM.MixSCF1   T
+MaxSCFIterations      300           # Maximum number of SCF iter
+DM.MixingWeight       0.05          # New DM amount for next SCF cycle
+DM.Tolerance          1.d-4         # Tolerance in maximum difference
+DM.UseSaveDM          true          # to use continuation files
+DM.NumberPulay        5
+TS.MixH               yes
+
+==================================================
+==================================================
+# MD variables
+
+MD.FinalTimeStep 1
+MD.TypeOfRun CG
+MD.NumCGsteps     100
+MD.UseSaveXV      .true.
+
+==================================================
+==================================================
+# Output variables
+
+WriteMullikenPop                1
+WriteBands                      .false.
+SaveRho                         .true.
+SaveDeltaRho                    .true.
+SaveHS                          .true.
+SaveElectrostaticPotential      True 
+WriteCoorXmol                   .true.
+WriteMDXmol                     .true.
+WriteMDhistory                  .false.
+WriteEigenvalues                yes
+
+
+	# -- CHARGE-DENSITIES AND POTENTIALS FOR MACROWAVE --
+
+SaveRho       		T
+SaveDeltaRho  		T
+SaveTotalPotential   	T
+SaveIonicCharge		T
+SaveElectrostaticPotential T
+SaveTotalCharge		T
+SaveRhoXC		T
+SaveBaderCharge .true.
+
+	# -- PROJECTED DENSITY OF STATES --
+
+LocalDensityOfStates 	   T
+
+%block ProjectedDensityOfStates
+-20.00  10.00  0.200  1000  eV
+%endblock ProjectedDensityOfStates
+
+%block LocalDensityOfStates
+-5.00  0.00   eV
+%endblock LocalDensityOfStates
+
+%block PDOS.kgrid_Monkhorst_Pack
+    11  0  0  0.0
+    0  11  0  0.0
+    0  0   11  0.0
+%endblock PDOS.kgrid_Monkhorst_Pack
+
+==================================================
+==================================================
+
