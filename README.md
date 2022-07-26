@@ -135,8 +135,9 @@ http://www.training.prace-ri.eu/uploads/tx_pracetmo/Tutorial_-_The_Siesta_Code.p
 https://departments.icmab.es/leem/SIESTA_MATERIAL/Docs/Tutorials/tlv14/index.html
 
 Access to psuedopotentials:
-http://nninc.cnf.cornell.edu/ (PSF format)
-https://departments.icmab.es/leem/siesta/Databases/Pseudopotentials/periodictable-intro.html (PSF format)
+https://nninc.cnf.cornell.edu/dd_search.php?frmxcprox=&frmxctype=&frmspclass=TM (PSF format)
+https://www.simuneatomistics.com/siesta-pro/siesta-pseudos-and-basis-database/ (PSF format)
+https://departments.icmab.es/leem/SIESTA_MATERIAL/Databases/Pseudopotentials/periodictable-gga-abinit.html (PSF format)
 http://www.pseudo-dojo.org/ (PSML format)
 
 Citations
