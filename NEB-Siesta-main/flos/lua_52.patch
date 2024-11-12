@@ -1,0 +1,42 @@
+diff --git a/flos/num/array.lua b/flos/num/array.lua
+index 97c0475..ec995c9 100644
+--- a/flos/num/array.lua
++++ b/flos/num/array.lua
+@@ -1083,37 +1083,6 @@ function Array.__div(lhs, rhs)
+    return ret
+ end
+ 
+---- Elementwise floor division of two arrays (see `Array:__add`)
+--- @param lhs the first operand
+--- @param rhs the second operand
+--- @return an Array with `lhs // rhs`
+-function Array.__idiv(lhs, rhs)
+-   local ret
+-   if isArray(lhs) and isArray(rhs) then
+-      local sh = lhs.shape:align(rhs.shape)
+-      if sh == nil then
+-	 error("flos.Array // requires the same shape for two different Arrays")
+-      end
+-      ret = Array( lhs.shape )
+-      for i = 1, #lhs do
+-	 ret[i] = lhs[i] // rhs[i]
+-      end
+-   elseif isArray(lhs) then
+-      ret = Array( lhs.shape )
+-      for i = 1, #lhs do
+-	 ret[i] = lhs[i] // rhs
+-      end
+-   elseif isArray(rhs) then
+-      ret = Array( rhs.shape )
+-      for i = 1, #rhs do
+-	 ret[i] = lhs // rhs[i]
+-      end
+-   else
+-      error("flos.Array // could not figure out the types")
+-   end
+-   return ret
+-end
+-
+ --- Elementwise unary negation
+ -- @return an Array with `-self`
+ function Array:__unm()

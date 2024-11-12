@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import re
+import shutil
+import subprocess
+
+
+                    # ------------------------------------ #
+
+
+class EslBundleUnarchiver(object):
+
+    def __init__(self, workdir, lib_path):
+
+        self.workdir = workdir
+        self.lib_path = lib_path
+        self.name = lib_path.split(os.path.sep)[-1]
+        self.name = ".".join(self.name.split(".")[:-1])
+        self.name = re.sub("^lib", "", self.name)
+
+
+    def extract_objects(self):
+
+        print("Unpacking %s" % self.name)
+        os.chdir(self.workdir)
+        os.makedirs(self.name)
+        os.chdir(self.name)
+        subprocess.run(["ar", "x", self.lib_path])
+
+
+class EslBundleCondenser(object):
+
+    def __init__(self, rootdir, workdir, single_lib):
+
+        self.rootdir = rootdir
+        self.workdir = workdir
+        self.libs = []
+        self.single_lib = os.path.join(self.rootdir, single_lib)
+
+        re_lib = re.compile("lib.*\\.a$")
+        for root, dirs, files in os.walk(self.rootdir):
+            self.libs += [os.path.join(root, item) for item in files \
+                if re_lib.match(item)]
+        self.libs.sort()
+
+
+    def make_single_lib(self):
+
+        # Extract archives
+        for archive in self.libs:
+            dumper = EslBundleUnarchiver(self.workdir, archive)
+            dumper.extract_objects()
+
+        # Bring back all object files together
+        obj_files = []
+        for root, dirs, files in os.walk(self.workdir):
+            obj_files += [os.path.join(root, item) for item in files]
+        print("Repacking objects into %s" % self.single_lib)
+        subprocess.run(["ar", "cqs", self.single_lib] + obj_files)
+
+
+                    # ------------------------------------ #
+
+
+# Process command-line arguments
+parser = argparse.ArgumentParser(
+    description="Repacks all static libraries of the ESL Bundle into one archive",
+    epilog="By default, this script is expected to be run from the top build directory of the ESL Bundle")
+parser.add_argument("-o", "--output", default="libesl_bundle.a",
+    help="Output file to store the repacked objects")
+parser.add_argument("-l", "--libdir", default=os.path.join("install", "lib"), 
+    help="Install directory of the ESL Bundle libraries")
+parser.add_argument("-w", "--workdir", default="esl_repack", 
+    help="Work directory for the repacking of the objects")
+args = parser.parse_args()
+
+# Check command-line arguments
+if ( not os.path.isdir(args.libdir) ):
+    parser.error("root directory not found: '%s'" % args.libdir)
+if ( os.path.exists(args.workdir) ):
+    parser.error("work directory already exists: '%s'" % args.workdir)
+else:
+    os.makedirs(args.workdir)
+
+# Restart from scratch if the output file already exists
+if ( os.path.exists(args.output) ):
+    os.remove(args.output)
+
+# Expand and repack all object files
+workdir = os.path.abspath(args.workdir)
+repacker = EslBundleCondenser(os.path.abspath(args.libdir),
+    os.path.abspath(args.workdir), args.output)
+repacker.make_single_lib()
+shutil.rmtree(workdir)

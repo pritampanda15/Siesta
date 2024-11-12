@@ -1,0 +1,337 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import shutil
+import subprocess
+import stat
+
+from ruamel.yaml import YAML
+
+
+                    # ------------------------------------ #
+
+
+# Configuration of the fake package
+fake_pkg_name = "fakepc"
+fake_pkg_version = "0.1.6"
+
+                    # ------------------------------------ #
+
+
+# From the documentation of pkg-config
+# https://people.freedesktop.org/~dbn/pkg-config-guide.html
+#
+# Here is a short description of the keyword fields:
+#
+#   - Name: A human-readable name for the library or package. This does not
+#           affect usage of the pkg-config tool, which uses the name of the
+#           .pc file.
+#
+#   - Description: A brief description of the package.
+#
+#   - URL: An URL where people can get more information about and download
+#          the package.
+#
+#   - Version: A string specifically defining the version of the package.
+#
+#   - Requires: A list of packages required by this package. The versions of
+#               these packages may be specified using the comparison
+#               operators =, <, >, <= or >=.
+#
+#    - Requires.private: A list of private packages required by this package
+#                        but not exposed to applications. The version specific
+#                        rules from the Requires field also apply here.
+#
+#    - Conflicts: An optional field describing packages that this one
+#                 conflicts with. The version specific rules from the
+#                 Requires field also apply here. This field also takes
+#                 multiple instances of the same package. E.g.,
+#                 Conflicts: bar < 1.2.3, bar >= 1.3.0.
+#
+#    - Cflags: The compiler flags specific to this package and any required
+#              libraries that don't support pkg-config. If the required
+#              libraries support pkg-config, they should be added to Requires
+#              or Requires.private.
+#
+#    - Libs: The link flags specific to this package and any required
+#            libraries that don't support pkg-config. The same rule as Cflags
+#            applies here.
+#
+#    - Libs.private: The link flags for private libraries required by this
+#                    package but not exposed to applications. The same rule
+#                    as Cflags applies here.
+#
+esl_bundle_specs = """\
+%YAML 1.2
+---
+
+packages:
+  - elsi
+  - fdf
+  - fdict
+  - flook
+  - futile
+  - libgridxc
+  - libxc
+  - psolver
+  - pspio
+  - scotch
+  - superlu_dist
+  - xmlf90
+
+specs:
+  elsi:
+    name: ELSI
+    version: 2.3.1
+    description: ELectronic Structure Infrastructure
+    url: https://wordpress.elsi-interchange.org/
+    libs: [elsi, elpa, pexsi, OMM, MatrixSwitch, superlu_dist]
+    deps: [linalg, psolver, scotch]
+  fdict:
+    name: fdict
+    version: 0.7.1
+    description: Fortran type-free variables and type-free dictionaries
+    url: https://github.com/zerothi/fdict
+    libs: [fdict]
+  flook:
+    name: Flook
+    version: 0.7.0
+    description: Linking Fortran and Lua together
+    url: https://github.com/ElectronicStructureLibrary/flook
+    libs: [flookall, dl]
+    deps: [fdict]
+  scotch:
+    name: Scotch
+    version: 6.0.4
+    description:
+    url: https://gforge.inria.fr/projects/scotch/
+    libs: [ptscotchparmetis, ptscotch, ptscotcherr, scotchmetis, scotch, scotcherr, stdc++, gomp, z]
+
+...
+"""
+
+
+                    # ------------------------------------ #
+
+
+# Template for pkg-config files
+pkg_config_template = """\
+prefix=@prefix@
+exec_prefix=${prefix}
+bindir=${exec_prefix}/bin
+includedir=${prefix}/include
+libdir=${exec_prefix}/lib%(vars_private)s
+
+Name: %(name)s
+Description: %(description)s
+Version: %(version)s%(url)s%(deps)s%(deps_private)s%(conflicts)s
+Cflags: -I${includedir}%(moddir)s
+Libs: -L${libdir} %(libs)s%(libs_private)s
+"""
+
+class PkgConfigMaker(object):
+
+    def __init__(self, pkg_specs):
+
+        # Init optional and special package fields
+        self.specs = {
+            "conflicts": "",
+            "deps": "",
+            "deps_private": "",
+            "libs_private": "",
+            "moddir": "",
+            "url": "",
+            "vars_private": "",
+        }
+
+        # Init mandatory package fields
+        for key in ["description", "name", "version"]:
+            self.specs[key] = pkg_specs[key]
+
+        # Reformat libraries (assumed to appear in link-time order)
+        self.specs["libs"] = self.libs_to_specs(pkg_specs["libs"])
+        if ( "libs_private" in pkg_specs ):
+            self.specs["vars_private"] = "\nprivate_libs=%s" % \
+                self.libs_to_specs(pkg_specs["libs_private"])
+            self.specs["libs_private"] = "\nLibs.private: ${private_libs}"
+
+        # Tune optional package fields if present
+        opt_fields = {
+            "conflicts": "Conflicts",
+            "deps": "Requires",
+            "deps_private": "Requires.private",
+            "url": "URL",
+        }
+        for key in opt_fields.keys():
+            if ( key in pkg_specs ):
+                tmp_enum = []
+                if ( isinstance(pkg_specs[key], str) ):
+                    tmp_enum.append(pkg_specs[key])
+                else:
+                    for item in pkg_specs[key]:
+                        if ( isinstance(item, str) ):
+                            tmp_enum.append(item)
+                        else:
+                            tmp_enum.append(self.triplet_to_specs(item))
+                self.specs[key] = "\n%s: %s" % \
+                    (opt_fields[key], ", ".join(tmp_enum))
+
+        # Tune special fields
+        if ( "moddir" in pkg_specs ):
+            self.specs["moddir"] = "/" + pkg_specs["moddir"]
+
+
+    def get_pc_data(self):
+
+        return pkg_config_template % self.specs
+
+
+    def libs_to_specs(self, libs):
+
+        ret = ""
+        for item in libs:
+            if ( len(ret) > 0 ):
+                ret += " "
+            if ( item[0] == "$" ):
+                ret += item
+            else:
+                ret += "-l%s" % item
+
+        return ret
+
+
+    def triplet_to_specs(self, triplet, include_min=False, include_max=False):
+
+        min_symbol = ">"
+        if ( include_min ):
+            min_symbol = ">="
+        max_symbol = ">"
+        if ( include_max ):
+            max_symbol = ">="
+
+        return "%s %s %s, %s %s %s" % \
+            (triplet[0], min_symbol, triplet[1], triplet[0], max_symbol, triplet[2])
+
+
+                    # ------------------------------------ #
+
+
+# Process command-line arguments
+parser = argparse.ArgumentParser(
+    description="Generates a fake package that installs missing pkg-config files",
+    epilog="By default, this script is expected to be run from the top build directory of the ESL Bundle")
+parser.add_argument("-d", "--delete", action="store_true",
+    default=False,
+    help="Delete fake package source tree if it already exists")
+parser.add_argument("-i", "--install",
+    default=os.path.join("install", "lib", "pkgconfig"),
+    help="Output file to store the repacked objects")
+parser.add_argument("-s", "--source",
+    default="%s-%s" % (fake_pkg_name, fake_pkg_version), 
+    help="Source directory of the fake package")
+args = parser.parse_args()
+
+# Check command-line arguments
+if ( os.path.exists(args.source) ):
+    if ( args.delete ):
+        shutil.rmtree(args.source)
+    else:
+        parser.error("source directory already exists: '%s'" % args.source)
+os.makedirs(args.source)
+
+# Process specifications
+print("Loading bundle specifications")
+yaml_doc = YAML()
+yaml_data = yaml_doc.load(esl_bundle_specs)
+pc_srcs = []
+for pkg, specs in yaml_data["specs"].items():
+    pcmkr = PkgConfigMaker(specs)
+    with open(os.path.join(args.source, "%s.pc.in" % pkg),"w") as pc_file:
+        pc_file.write(pcmkr.get_pc_data())
+        pc_srcs.append("%s.pc.in" % pkg)
+
+# Generate configure script
+print("Generating source package")
+cfg_path = os.path.join(args.source, "configure")
+with open(cfg_path, "w") as cfg_script:
+    cfg_script.write("""\
+#!/bin/sh
+
+# Guess the location of the source directory
+srcdir=`dirname "${0}"`
+test -z "${srcdir}" && srcdir="."
+
+# Fake the behaviour of Autoconf
+prefix="/usr/local"
+linalg=""
+while test "${#}" -gt "0"; do
+  if test "${1}" = "--prefix"; then
+    shift
+    prefix="${1}"
+    shift
+    continue
+  fi
+  chk_pfx=`echo "${1}" | grep '^--prefix'`
+  if test ! -z "${chk_pfx}"; then
+    prefix=`echo "${chk_pfx}" | sed -e 's/--prefix.//'`
+    shift
+    continue
+  fi
+  chk_lin=`echo "${1}" | grep '^linalg='`
+  if test ! -z "${chk_lin}"; then
+    linalg=`echo "${chk_lin}" | sed -e 's/linalg=//'`
+    shift
+    continue
+  fi
+
+  shift
+done
+
+# Process the linalg setting
+cat >linalg.pc <<EOF
+Name: LinearAlgebra
+Description: Linear algebra libraries
+Version: 0.0.1
+Cflags:
+Libs: ${linalg}
+EOF
+
+# Set prefix in config files
+for in_file in ${srcdir}/*.in; do
+  pc_file=`basename "${in_file}" | sed -e 's/\.in$//'`
+  sed -e "s,@prefix@,${prefix},g; s,@srcdir@,${srcdir},g" "${in_file}" >"${pc_file}"
+done
+""")
+os.chmod(cfg_path, (stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH))
+
+# Generate makefile
+pc_srcs.append("linalg.pc.in")
+with open(os.path.join(args.source, "Makefile.in"), "w") as mk_file:
+    mk_file.write("""\
+# This file has been automatically generated and should not be edited
+prefix = @prefix@
+srcdir = @srcdir@
+
+libdir  = $(prefix)/lib
+INSTALL = ${srcdir}/install-sh
+
+all all_targets clean dist distclean distcleancheck:
+	@echo "Nothing to do"
+
+install:
+	$(INSTALL) -d -m 755 $(DESTDIR)$(libdir)/pkgconfig
+	$(INSTALL) -m 644 %s $(DESTDIR)$(libdir)/pkgconfig
+""" % (" ".join([item[:-3] for item in pc_srcs])))
+
+# Copy install script
+subprocess.run(["cp", os.path.join("..", "bin", "install-sh"),
+    os.path.join(args.source, "install-sh")])
+
+# Generate source tarball
+print("Generating source tarball")
+subprocess.run(["tar", "czf", "%s.tar.gz" % args.source, args.source])
+
+# Update esl.modules
+subprocess.run(["sed", "-i", "-e", "/fakepc/s/[0-9]\\.[0-9]\\.[0-9]/%s/g" % fake_pkg_version,
+    os.path.join("..", "esl.modules")])
