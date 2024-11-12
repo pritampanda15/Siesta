@@ -1,0 +1,111 @@
+INCAR
+SYSTEM = Si_bulk
+ISTART = 0 # From-scratch; job : 0-new 1-cont 2-samecut 
+NWRITE = 3 Verbosity
+
+! electronic relaxation
+ENCUT = 300.0 # cut-off energy
+PREC = Accurate # precision : accurate/normal/low 
+ISPIN = 1 # 1 - off, 2 - on (non spin-polarized calculation)
+ICHARG = 2 # > 10 for non-SC calculation
+IALGO = 38 # DAVidson, then RMM-DIIS
+EDIFF = 1.0E-8 # default
+ISMEAR = 0 # gaussian
+SIGMA = 0.05
+
+! PAW's
+LREAL = .FALSE. # default - Automatic choice of how projection is done
+ADDGRID = .TRUE.
+
+! phonons
+IBRION = 5
+POTIM = 0.01
+
+! parallelisation
+LPLANE = .FALSE.
+KPAR=8
+
+! output
+LWAVE = .FALSE. # WAVECAR file
+LCHARG = .FALSE. # CHCAR file
+LELF = .FALSE.
+LVTOT = .FALSE.
+
+KPOINTS:
+Automatic mesh
+0              ! number of k-points = 0 ->automatic generation scheme 
+M              ! generate a Gamma centered grid
+4 4 4
+0.5 0.5 0.5
+
+Script to run Phonon
+#!/bin/bash
+#SBATCH --time=10:00:00
+#SBATCH  -N 4
+#SBATCH --account=snic2019-1-25
+#SBATCH -J Phonon
+#SBATCH --exclusive
+#SBATCH --ntasks-per-node=32
+module load VASP/5.4.4.16052018-nsc1-intel-2018b-eb
+mpprun vasp_std
+
+
+
+RAMAN
+Create a folder named Raman:
+
+Copy vasp_raman.py to the folder
+
+Copy OUTCAR and rename to OUTCAR.phon and paste to Raman directory from Phonon Folder.
+
+Same with CONTCAR and rename to POSCAR.phon
+
+Copy EIGENVAL and paste to Raman folder
+
+INCAR
+SYSTEM = NAPTHA04
+ISTART = 0 # From-scratch; job : 0-new 1-cont 2-samecut 
+NWRITE = 3 Verbosity
+
+! electronic relaxation
+ENCUT = 400.0 # cut-off energy
+PREC = Normal # precision : accurate/normal/low 
+ISPIN = 1 # 1 - off, 2 - on (non spin-polarized calculation)
+ICHARG = 2 # > 10 for non-SC calculation
+ALGO = Fast # DAVidson, then RMM-DIIS
+EDIFF = 1.0E-8 # default
+ISMEAR = 0 # gaussian
+SIGMA = 0.02
+
+! PAW's
+LREAL = .FALSE. # default - Automatic choice of how projection is done
+ADDGRID = .TRUE.
+
+!LCALCEPS=.TRUE.
+
+LEPSILON= .TRUE.
+
+! ionic relaxation
+!EDIFFG = -1E-4
+!ISYM = 0
+!IBRION = 1
+!NSW = 1000
+! ISIF = 2
+
+! parallelisation
+LPLANE = .TRUE.
+NSIM=4
+!NPAR = 2 # number of cores
+
+! output
+LWAVE = .FALSE. # WAVECAR file
+LCHARG = .FALSE. # CHCAR file
+LELF = .FALSE.
+LVTOT = .FALSE.
+
+KPOINTS
+Automatic mesh
+0              ! number of k-points = 0 ->automatic generation scheme 
+M              ! generate a Gamma centered grid
+4 4 4
+0.5 0.5 0.5
