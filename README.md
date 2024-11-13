@@ -1,152 +1,175 @@
+The `Siesta` repository, maintained by `pritampanda15`, provides a collection of FDF (Flexible Data Format) input files tailored for the SIESTA software package. SIESTA is a density-functional theory (DFT) code used for efficient electronic structure calculations and ab initio molecular dynamics simulations of molecules and solids. This repository offers input files compatible with SIESTA versions 4.0.2, 4.1-b4, and PSML-supported versions.
+
+## Repository Structure
+
+The repository is organized into several directories and files, each serving a specific purpose:
+
+- **Hybrid_Potentials_and_Electric_field**: Contains input files and pseudopotentials for calculations involving hybrid potentials and electric fields. 
+
+- **NEB-Siesta-main**: Includes scripts and input files for performing Nudged Elastic Band (NEB) calculations using SIESTA.
+
+- **Pseudopotentials-master**: Offers a collection of pseudopotential files (.ion) for various elements, essential for SIESTA calculations. 
+
+- **Raman-Phonon-VASP-master**: Provides scripts and input files for Raman and phonon calculations, particularly using VASP.
+
+- **Transport scripts**: Contains scripts for transport calculations, including current scripts and electrode definitions. 
+
+- **optimization scripts**: Offers scripts for optimizing structures and parameters within SIESTA calculations.
+
+- **Bader.fdf**: An FDF file configured for Bader charge analysis.
+
+- **complete_fdf.fdf**: A comprehensive FDF file encompassing various strategic electronic structure calculations.
+
+- **denchar.fdf**: An FDF file set up for density charge (Denchar) calculations in 2D and 3D.
+
+- **dos.fdf**: An FDF file designed for projected density of states (PDOS) calculations.
+
+- **grid2cube.dat**: A data file potentially used for converting grid data to cube format.
+
+- **relax.fdf**: An FDF file configured for structural relaxation calculations. 
+
+- **wxDragon**: A directory that may contain scripts or tools related to wxDragon, a visualization tool for electronic structure calculations. 
+
 # Siesta
-SIESTA is a density-functional code able to perform efficient electronic structure calculations and ab initio molecular dynamics  simulations of molecules and solids.
 
-FDF (Input) files for relaxation, PDOS and Denchar calculations in SIESTA 4.0.2 version as well as 4.1-b4 and PSML supported version (https://launchpad.net/siesta/psml-support) are as follows:
-a. complete_fdf ----> A complete fdf file for various strategical electronic structure calculations
-b. relax.fdf ------> For relaxation;
-c. dos.fdf --------> For PDOS calculation;
-d. denchar.fdf ----> For denchar calculations 3D/2D.
+**SIESTA** is a density-functional theory (DFT) code for performing efficient electronic structure calculations and ab initio molecular dynamics simulations of molecules and solids.
 
-An additional fdf input file with all the tags for different strategies are provided in complete_fdf file. Calculations like bandstructure, phonons, fermi surface, LDA+U tags have been defined. 
+## Input Files (FDF) for SIESTA Calculations
 
-Check out my youtube tutorial videos:
-https://www.youtube.com/watch?v=eofuNrCtUQU&t=43s
-https://www.youtube.com/watch?v=B3HUvSkG55o&t=26s
+The following Flexible Data Format (FDF) files are provided for various types of calculations compatible with SIESTA 4.0.2, 4.1-b4, and PSML-supported versions:
 
-Before changing the parameters mentioned in the input files (marked as XXXXX), do convergence test especially for meshcutoff, kpoints, SCF.DM.Tolerance, Electronic Temperature.
+- **complete_fdf**: Comprehensive FDF file for various electronic structure calculations.
+- **relax.fdf**: For relaxation calculations.
+- **dos.fdf**: For projected density of states (PDOS) calculations.
+- **denchar.fdf**: For charge density (Denchar) calculations in 3D/2D.
 
-Recommended Criteria's for fully relativistic calculations during SCF cycles:
-1. High number of kpoints
-2. Low electronic temperature
-3. Extremely small DM. Tolerance
-4. High MeshCutoff
+Additionally, the **complete_fdf** file includes tags for calculations such as band structure, phonons, Fermi surfaces, and LDA+U.
 
-Siesta Utilities:You can find these utilities in Siesta/ Util folder:
-Bands:     Tools for plotting band structures (including "fatbands")
+## Tutorial Videos
 
-CMLComp: Tools to use the information contained in the CML file
-         produced by the program (by Toby White, Andrew Walker,
-         and others)
+- [Introduction to SIESTA - Tutorial Part 1](https://www.youtube.com/watch?v=eofuNrCtUQU&t=43s)
+- [Introduction to SIESTA - Tutorial Part 2](https://www.youtube.com/watch?v=B3HUvSkG55o&t=26s)
 
-Contour: grid2d: As Denchar but for any function defined in the 3D
-         grid.  grid1d: Extracts a 1D line of data out of the 3D grid.
-         Based on the 3D grid (by E. Artacho)
+## Recommendations for SCF Convergence
 
-Contrib: Code contributed by Siesta users (expanding collection). See
-	 the individual documentation materials.
+When adjusting parameters (marked as `XXXXX` in input files), perform a convergence test, especially for:
+1. **MeshCutoff** and **k-points**
+2. **SCF.DM.Tolerance** and **Electronic Temperature**
 
-COOP: Generation of COOP/COHP/PDOS curves for chemical analysis.
-      Computation of data to generate "fatbands" plots.
+**Recommended Settings for Fully Relativistic Calculations:**
+- High k-points number
+- Low electronic temperature
+- Small DM tolerance
+- High MeshCutoff
 
-Denchar: Produces 2D and 3D plots of charge and spin density, and of
-         wave-functions. Uses the density matrix and basis orbital
-         information (by J. Junquera and P. Ordejon).
+## Siesta Utilities
 
-DensityMatrix: Utilities to process and convert density-matrix files.
+Available in the `Siesta/Util` folder:
 
-Eig2DOS:   Estimation of the Density of States from the .EIG file.
-           (by E. Artacho and A. Garcia)
+- **Bands**: Plotting band structures, including "fatbands."
+- **CMLComp**: Tools for handling data in CML format.
+- **Contour**: Extracts and processes 1D and 2D data from 3D grids.
+- **COOP**: For COOP/COHP/PDOS analysis.
+- **Denchar**: Generates 2D/3D plots of charge density and wave-functions.
+- **DensityMatrix**: Converts and processes density matrix files.
+- **Eig2DOS**: Estimates DOS from `.EIG` files.
+- **Gen-basis**: Generates basis sets and KB projectors.
+- **Grid**: Grid file manipulation utilities.
+- **Grimme**: Simplifies atomic potential generation.
+- **Helpers**: Assorted helper scripts.
+- **HSX**: Converts between HS and HSX files.
+- **JobList**: Manages multiple SIESTA jobs.
+- **Macroave**: Macroscopic averaging for interfaces.
+- **MD**: Scripts for molecular dynamics data extraction.
+- **MPI_test**: MPI interface diagnostics.
+- **ON**: Converts Order-N eigenstate files to NetCDF.
+- **Optical**: Optical properties calculations.
+- **pdosxml**: Processes PDOS XML files.
+- **PEXSI**: Utilities for PEXSI-related output.
+- **Plrho**: 3D electron density plotting.
+- **Projections**: Projects electronic structure onto subsystems.
+- **PyAtom**: Python scripts for plotting and data extraction.
+- **SCF**: Small utilities for SCF calculations.
+- **sies2arc**: Converts coordinates to arc format.
+- **SiestaSubroutine**: External agent driving examples.
+- **Sockets**: F90 sockets interface examples.
+- **STM**: STM image simulations.
+- **TS**: Utilities for TranSiesta (NEGF code).
+- **VCA**: Tools for Virtual-Crystal calculations.
+- **Vibra**: Phonon frequency and mode calculations.
+- **WFS**: Wavefunction file utilities.
 
-Gen-basis : Stand-alone program 'gen-basis' to generate basis sets and
-            KB projectors, and 'ioncat' program for extraction of
-            information from .ion files.
+## Recommended Tutorials
 
-Grid: Utilities for the manipulation of grid files.
+- [Siesta Theory Session](https://personales.unican.es/junqueraj/JavierJunquera_files/Metodos/Theory-session.html)
+- [Siesta Hands-On Session](https://personales.unican.es/junqueraj/JavierJunquera_files/Metodos/Hands-on-session.html)
+- [Siesta Tutorials](https://departments.icmab.es/leem/siesta/Documentation/Tutorials/index.html)
 
-Grimme: Enable easy creation of the atomic potential block by reading
-	the ChemicalSpecies block and printing out the relevant information.
-	This makes it _very_ easy to create the correct units and quantities.
-	(by N. Papior)
+## Access to Pseudopotentials
 
-Helpers: Some helper scripts for aiding script generation.
+- [PSF format (NNIN/Cornell)](https://nninc.cnf.cornell.edu/dd_search.php?frmxcprox=&frmxctype=&frmspclass=TM)
+- [Simune SIESTA Pro](https://www.simuneatomistics.com/siesta-pro/siesta-pseudos-and-basis-database/)
+- [PSML format (Pseudo Dojo)](http://www.pseudo-dojo.org/)
 
-HSX: Conversion tool between HS and HSX files (by A. Garcia)
+## Citations
 
-JobList:   A suite of programs to generate and dispatch multiple
-           SIESTA jobs with varying options (by J. Soler)
-
-Macroave: Macroscopic averaging for interfaces and surfaces (by
-	  J. Junquera)
-
-MD: Some sample scripts for the extraction of some MD information from
-    the output file (by A. Garcia)
-
-MM_Examples: Force-field examples
-
-MPI_test:    Tests to help diagonose the interface to MPI.
-
-ON: Conversion of Order-N eigenstate to NetCDF file
-
-Optical: Calculation of optical properties (by D. Sanchez-Portal)
-
-Optimizer: General-purpose optimizer. Useful for basis-set and
-	   pseudopotential optimization (by A. Garcia)
-
-pdosxml: Utility to process the PDOS file (in XML format). (by
-	 A. Garcia)
-
-PEXSI: Utilites related to the output from PEXSI (by A. Garcia)
-
-Plrho: Plots in 3D the electron density and other functions
-       calculated by siesta (by Jose M. Soler)
-
-Projections: Compute projections of electronic structure of a system
-	     over the orbitals of a subsystem.
-
-PyAtom: Python scripts for plotting and data extraction (by A. Garcia)
-
-SCF: Python scripts for smaller stuff (by A. Garcia)
-
-Scripting: Experimental scripting modules in Python (by A. Garcia)
-
-sies2arc: Converts output coordinates to the arc movie format (by
-	  J. Gale)
-
-SiestaSubroutine: Code and examples of the driving of Siesta by an
-                  external agent (by J. Soler and A. Garcia)
-
-Sockets: Examples of the use of the f90 sockets interface (by M. Ceriotti)
-
-SpPivot: A utility to create a pivoting table for the sparse
-	 patterns in Siesta. Can create GRAPHVIZ output for easy
-	 display of the sparsity pattern (by N. Papior)
-
-STM/simple-stm:   Simple program for STM simulations (by P. Ordejon)
-
-STM/ol-stm:  Ordejon-Lorente STM image simulator
-
-TS: Contains several different utilities that are related to
-    the NEGF code TranSiesta. (by N. Papior)
-    See TS/README for details.
-
-VCA: Utilities to help in Virtual-Crystal calculations (by A. Garcia)
-
-Vibra: Package to compute phonon frequencies and modes (by P. Ordejon)
-
-WFS: Utilities for wavefunction-file manipulation
-
-Recommended tutorials:
-https://personales.unican.es/junqueraj/JavierJunquera_files/Metodos/Theory-session.html
-https://personales.unican.es/junqueraj/JavierJunquera_files/Metodos/Hands-on-session.html
-https://departments.icmab.es/leem/siesta/Documentation/Tutorials/index.html
-https://departments.icmab.es/leem/siesta/Documentation/Tutorials/Barcelona-2007/Basic-Execution.pdf
-https://departments.icmab.es/leem/siesta/Documentation/Tutorials/www.niees.ac.uk/events/siesta/siesta_files/Intro-1.pdf
-http://www.training.prace-ri.eu/uploads/tx_pracetmo/Tutorial_-_The_Siesta_Code.pdf
-https://departments.icmab.es/leem/SIESTA_MATERIAL/Docs/Tutorials/tlv14/index.html
-
-Access to psuedopotentials:
-https://nninc.cnf.cornell.edu/dd_search.php?frmxcprox=&frmxctype=&frmspclass=TM (PSF format)
-https://www.simuneatomistics.com/siesta-pro/siesta-pseudos-and-basis-database/ (PSF format)
-https://departments.icmab.es/leem/SIESTA_MATERIAL/Databases/Pseudopotentials/periodictable-gga-abinit.html (PSF format)
-http://www.pseudo-dojo.org/ (PSML format)
-
-Citations
-1. Phys. Rev. B 53, 10441, (1996)
+1. Phys. Rev. B 53, 10441 (1996)
 2. Int. J. Quantum Chem., 65, 453 (1997)
 3. J. Phys.: Condens. Matt. 14, 2745-2779 (2002)
 4. J. Phys.: Condens. Matter 20, 064208 (2008)
-5. Computer Physics Communications 226, 39-54 (2018), 10.1016/j.cpc.2018.01.012 arxiv preprint
+5. Computer Physics Communications 226, 39-54 (2018), 10.1016/j.cpc.2018.01.012
 6. Computer Physics Communications 227, 51-71 (2018), 10.1016/j.cpc.2018.02.011
 
-Cheers!!!
-Happy DFTing.
+---
+
+**Cheers and Happy DFTing!**
+
+
+## Getting Started
+
+To utilize the resources in this repository:
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/pritampanda15/Siesta.git
+   ```
+
+2. **Navigate to the Desired Directory**:
+   ```bash
+   cd Siesta/Hybrid_Potentials_and_Electric_field
+   ```
+
+3. **Review and Modify Input Files**: Each FDF file contains parameters and settings for specific calculations. It's essential to adjust these parameters according to your system and research requirements. For instance, the `relax.fdf` file includes sections for system name, lattice vectors, atomic coordinates, and self-consistent field settings. 
+
+4. **Run SIESTA Calculations**: After configuring the input files, execute your SIESTA calculations as per your computational setup.
+
+## Contributing
+
+Contributions to enhance this repository are welcome. To contribute:
+
+1. **Fork the Repository**: Click on the 'Fork' button at the top right corner of the repository page.
+
+2. **Create a New Branch**: For your feature or bug fix.
+   ```bash
+   git checkout -b feature-name
+   ```
+
+3. **Implement Changes**: Make the necessary modifications or additions.
+
+4. **Commit Changes**:
+   ```bash
+   git commit -m "Description of changes"
+   ```
+
+5. **Push to Your Fork**:
+   ```bash
+   git push origin feature-name
+   ```
+
+6. **Submit a Pull Request**: Navigate to your forked repository on GitHub and click on 'New Pull Request'.
+
+## License
+
+The repository does not specify a license. It's advisable to contact the repository owner for clarification before using the code in commercial or open-source projects.
+
+For more details, visit the [Siesta repository](https://github.com/pritampanda15/Siesta). 
